@@ -11,6 +11,9 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\User::class, 50)->create();
+        factory(App\User::class, 50)->create()->each(function ($user) {
+            $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
+            Storage::put('public/avatars/' . $user->id . '/avatar.png', (string) $avatar);
+        });
     }
 }
